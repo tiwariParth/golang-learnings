@@ -1,0 +1,25 @@
+/* Debug styles for mobile menu */
+.debug-info {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 9999;
+  max-width: 300px;
+  overflow: hidden;
+}
+
+/* Force the hamburger icon to be always visible in debug mode */
+.debug-mode .hamburger-menu {
+  display: flex !important;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+}

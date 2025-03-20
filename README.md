@@ -1,0 +1,102 @@
+# Neon Task Manager
+
+A beautiful, multi-tier task management application built with Go and modern web technologies.
+
+## Architecture
+
+This application follows a multi-tier architecture:
+
+1. **Presentation Layer**: Frontend UI built with HTML, CSS, and JavaScript
+2. **API Layer**: RESTful API endpoints built with Go using the Gorilla Mux router
+3. **Service Layer**: Business logic layer handling authentication and task management
+4. **Data Access Layer**: Repository pattern for database operations
+5. **Database Layer**: SQLite database using GORM ORM
+
+## Features
+
+- User authentication with JWT
+- Create, read, update, and delete tasks
+- Mark tasks as complete
+- Dark/light theme toggle
+- Responsive design
+- Graceful error handling
+- Local storage fallback when offline
+
+## Getting Started
+
+### Prerequisites
+
+- Go 1.18+
+- SQLite3
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+go mod download
+```
+
+3. Create a `.env` file (use the provided example as a template)
+4. Run the application:
+
+```bash
+go run main.go
+```
+
+5. Open your browser and navigate to `http://localhost:3000`
+
+## API Endpoints
+
+### Authentication
+
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login` - Login a user
+
+### Tasks
+
+- `GET /api/tasks` - Get all tasks for the authenticated user
+- `POST /api/tasks` - Create a new task
+- `GET /api/tasks/{id}` - Get a specific task
+- `PUT /api/tasks/{id}` - Update a task
+- `DELETE /api/tasks/{id}` - Delete a task
+
+### Miscellaneous
+
+- `GET /api/health` - Health check endpoint
+
+## Project Structure
+
+```
+golang-learnings/
+├── api/               # API handlers and middleware
+├── config/            # Configuration handling
+├── db/                # Database connection and repositories
+├── models/            # Data models
+├── services/          # Business logic
+├── static/            # Static frontend files
+│   ├── auth.css
+│   ├── auth.js
+│   ├── index.html
+│   ├── logo.svg
+│   ├── script.js
+│   └── styles.css
+├── .env               # Environment variables
+├── go.mod             # Go module definition
+├── go.sum             # Go module checksums
+├── main.go            # Application entry point
+└── README.md          # Project documentation
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

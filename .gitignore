@@ -1,0 +1,44 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go specific
+/vendor/
+/Godeps/
+
+# SQLite database files
+*.db
+*.db-journal
+
+# Environment variables
+.env
+
+# Logs
+*.log
+server.log
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Compiled binary
+/golang-learnings
+/main
+
+# tmp directory for testing
+/tmp/
+
+# Debug files
+debug
+
+# Air reload configuration (if using Air for hot reloading)
+.air.toml
+/tmp/
