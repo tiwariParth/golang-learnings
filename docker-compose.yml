@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  neon-taskmanager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: neon-taskmanager
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - STATIC_DIR=/app/static
+      - DATABASE_URL=file:/app/data/tasks.db
+      - ENVIRONMENT=production
+    env_file:
+      - .env.docker  # For JWT_SECRET and other sensitive variables
+    volumes:
+      - task-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  task-data:
+    # This named volume persists the SQLite database between container restarts

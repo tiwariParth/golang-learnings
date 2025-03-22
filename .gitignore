@@ -18,6 +18,9 @@
 # Environment variables
 .env
 
+# Docker-specific environment variables
+.env.docker
+
 # Logs
 *.log
 server.log
