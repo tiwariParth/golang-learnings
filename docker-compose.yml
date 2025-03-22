@@ -14,7 +14,7 @@ services:
       - DATABASE_URL=file:/app/data/tasks.db
       - ENVIRONMENT=production
     env_file:
-      - .env.docker  # For JWT_SECRET and other sensitive variables
+      - .env.docker
     volumes:
       - task-data:/app/data
     restart: unless-stopped
@@ -27,4 +27,3 @@ services:
 
 volumes:
   task-data:
-    # This named volume persists the SQLite database between container restarts

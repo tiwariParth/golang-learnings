@@ -47,6 +47,50 @@ go run main.go
 
 5. Open your browser and navigate to `http://localhost:3000`
 
+## Running with Docker
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Steps to Run with Docker
+
+1. Create an `.env.docker` file from the example:
+
+```bash
+# Copy the example file
+cp .env.example .env.docker
+
+# Edit the file to set your JWT secret
+# Make sure to change the JWT_SECRET value
+nano .env.docker
+```
+
+2. Build and start the container:
+
+```bash
+docker-compose up -d
+```
+
+3. The application will be available at http://localhost:3000
+
+4. View logs:
+
+```bash
+docker-compose logs -f
+```
+
+5. Stop the container:
+
+```bash
+docker-compose down
+```
+
+### Docker Volume
+
+The application uses a Docker volume named `task-data` to persist the SQLite database. This ensures your data remains even if you rebuild or restart the container.
+
 ## API Endpoints
 
 ### Authentication
