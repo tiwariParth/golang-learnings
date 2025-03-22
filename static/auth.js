@@ -508,6 +508,145 @@ window.addTask = async function () {
   }
 };
 
+// Define showNotification if it doesn't exist
+if (typeof showNotification !== 'function') {
+  window.showNotification = function (message, type = "success") {
+    // Remove any existing notifications
+    const existingNotification = document.querySelector(".notification");
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+
+    // Create new notification
+    const notification = document.createElement("div");
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    // Show notification with animation
+    setTimeout(() => notification.classList.add("show"), 10);
+
+    // Auto-hide after timeout
+    setTimeout(() => {
+      notification.classList.remove("show");
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  };
+}
+
+// Define showLoading if it doesn't exist
+if (typeof showLoading !== 'function') {
+  window.showLoading = function (parentElement) {
+    if (!parentElement) return;
+    
+    const loadingIndicator = document.createElement("div");
+    loadingIndicator.className = "loading";
+    loadingIndicator.innerHTML = "<span></span><span></span><span></span>";
+    parentElement.appendChild(loadingIndicator);
+    return loadingIndicator;
+  };
+}
+
+// Define hideLoading if it doesn't exist
+if (typeof hideLoading !== 'function') {
+  window.hideLoading = function () {
+    const loadingIndicator = document.querySelector(".loading");
+    if (loadingIndicator && loadingIndicator.parentNode) {
+      loadingIndicator.parentNode.removeChild(loadingIndicator);
+    }
+  };
+}
+
+// Define loadTasksFromLocalStorage if it doesn't exist
+if (typeof loadTasksFromLocalStorage !== 'function') {
+  window.loadTasksFromLocalStorage = function () {
+    try {
+      window.tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      console.log("Loaded tasks from localStorage:", window.tasks);
+    } catch (e) {
+      console.error("Error loading tasks from localStorage:", e);
+      localStorage.removeItem("tasks"); // Clear corrupted data
+      window.tasks = [];
+    }
+    
+    if (typeof renderTasks === 'function') {
+      renderTasks();
+    }
+  };
+}
+
+// Define saveTasks if it doesn't exist
+if (typeof saveTasks !== 'function') {
+  window.saveTasks = function () {
+    try {
+      localStorage.setItem("tasks", JSON.stringify(window.tasks || []));
+      console.log("Tasks saved to localStorage as backup");
+    } catch (e) {
+      console.error("Error saving tasks to localStorage:", e);
+    }
+  };
+}
+
+// Define updateTaskCounter if it doesn't exist
+if (typeof updateTaskCounter !== 'function') {
+  window.updateTaskCounter = function () {
+    if (!window.tasks) return;
+    
+    let taskTitle = document.querySelector(".task-list h2");
+    if (!taskTitle) return;
+
+    let counter = document.querySelector(".task-counter");
+    
+    // Count incomplete tasks
+    const incompleteTasks = window.tasks.filter((task) => !task.completed).length;
+
+    if (!counter) {
+      counter = document.createElement("span");
+      counter.className = "task-counter";
+      taskTitle.appendChild(counter);
+    }
+
+    counter.textContent = incompleteTasks;
+  };
+}
+
+// Override the original fetch functions to use authentication
+window.originalFetchTasks = window.fetchTasks;
+window.fetchTasks = function () {
+  // Make sure tasks array and tasksList element exist
+  window.tasks = window.tasks || [];
+  const tasksList = document.getElementById("tasks");
+  if (!tasksList) return;
+
+  showLoading(tasksList);
+
+  const headers = {};
+  // Add auth token if available
+  if (authToken) {
+    headers["Authorization"] = `Bearer ${authToken}`;
+  }
+
+  fetchWithAuth("/api/tasks", { headers })
+    .then((response) => response.json())
+    .then((data) => {
+      tasks = data;
+      console.log("Loaded tasks from API:", tasks);
+      hideLoading();
+      renderTasks();
+      updateTaskCounter();
+    })
+    .catch((error) => {
+      console.error("Error loading tasks from API:", error);
+      hideLoading();
+      showNotification(
+        "Could not connect to server. Using local data.",
+        "error"
+      );
+      // Fallback to localStorage if API fails
+      loadTasksFromLocalStorage();
+    });
+};
+
 // Add CSS style for required fields and status indicators
 const authStyle = document.createElement("style");
 authStyle.textContent = `

@@ -12,12 +12,19 @@ fi
 if [ ! -f .env ]; then
     echo "Creating .env file..."
     cat > .env << EOL
-DB_USERNAME=postgres
-DB_PASSWORD=postgres
-DB_NAME=postgres
-DB_HOST=localhost
-DB_PORT=5432
-API_PORT=8080
+# Server configuration
+PORT=3000
+STATIC_DIR=./static
+LOG_LEVEL=info
+
+# Database configuration
+DATABASE_URL=file:./tasks.db
+
+# Authentication
+JWT_SECRET=your-secret-key-change-this-in-production
+
+# Environment (development, test, production)
+ENVIRONMENT=development
 EOL
     echo ".env file created with default values. Please edit as needed."
 fi
@@ -26,13 +33,11 @@ fi
 echo "Downloading dependencies..."
 go mod download
 
-# Check if PostgreSQL is installed
-if ! command -v psql &> /dev/null; then
-    echo "PostgreSQL is not installed. Please install PostgreSQL before continuing."
-    echo "Setup incomplete."
-    exit 1
+# Create the static directory if it doesn't exist
+if [ ! -d "static" ]; then
+    echo "Creating static directory..."
+    mkdir -p static
 fi
 
 echo "Environment setup completed successfully!"
-echo "Make sure to configure your database and update the .env file accordingly."
 echo "Run 'go run main.go' to start the application."
