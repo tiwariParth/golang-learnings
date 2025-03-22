@@ -100,3 +100,78 @@ golang-learnings/
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+# Project Setup Guide
+
+This guide will help you set up the project environment from scratch.
+
+## Prerequisites
+
+1. **Go** (version 1.20 or higher)
+2. **PostgreSQL** (version 13 or higher)
+3. **Git**
+
+## Setup Steps
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd <project-directory>
+```
+
+### 2. Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_NAME=your_db_name
+DB_HOST=localhost
+DB_PORT=5432
+API_PORT=8080
+```
+
+Make sure to update the values to match your database configuration.
+
+### 3. Install Dependencies
+
+```bash
+go mod download
+```
+
+### 4. Database Setup
+
+- Install PostgreSQL if not already installed
+- Create a new database with the name defined in your `.env` file
+- The application will automatically create necessary tables on startup
+
+### 5. Run the Application
+
+```bash
+go run main.go
+```
+
+## Development Tools
+
+- To generate swagger documentation: `swag init`
+- To test API endpoints: Use tools like Postman or cURL
+
+## Project Structure
+
+- `/controller`: Contains API route handlers
+- `/docs`: Swagger documentation
+- `/database`: Database initialization and models
+- `/middleware`: Authentication and request middleware
+- `/repository`: Data access layer
+- `/service`: Business logic
+- `/util`: Helper functions and utilities
+
+## Troubleshooting
+
+If you encounter any issues during setup:
+
+1. Ensure PostgreSQL service is running
+2. Check that environment variables are correctly set
+3. Verify that Go modules can be downloaded (might require setting GOPROXY)
